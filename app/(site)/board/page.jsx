@@ -1,6 +1,6 @@
 import styles from "./page.module.css";
 import prisma from "@/lib/prisma";
-import Post from "./components/Post";
+import Post from "@/app/components/Post";
 import Link from "next/link";
 
 async function getPosts() {
@@ -20,8 +20,6 @@ export default async function Home() {
   console.log(posts);
   return (
     <main className={styles.main}>
-      <Link href={"/add-post"}>Add Post</Link>
-      <h1>feed</h1>
       {posts.map((post) => {
         return (
           <Post
@@ -33,6 +31,9 @@ export default async function Home() {
           />
         );
       })}
+      <Link href={"board/question"}>질문</Link>
+      <Link href={"board/community"}>자유</Link>
+      <Link href={"board/information"}>정보</Link>
     </main>
   );
 }

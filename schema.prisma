@@ -1,31 +1,40 @@
-// schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Post {
-  id        String     @default(cuid()) @id
+  id        Int  @id @default(autoincrement())
   title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
+  content   String
+  like      Int @default(0)
+  published  Boolean    @default(true)
+
   authorId  String?
+  categoryId Int
+
+  author    User?   @relation(fields: [authorId], references: [id])
+  category  Category @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+  id        Int   @id @default(autoincrement())
+  name      String
+  posts Post[]
 }
 
 model User {
-  id            String       @default(cuid()) @id
-  name          String?
-  email         String?   @unique
-  password      String    @db.Char(60)
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  posts         Post[]
-  @@map(name: "users")
+  id        String   @id @default(cuid())
+  name      String?
+  email     String  @unique
+  password    String
+  createdAt DateTime @default(now())
+  posts Post[]
+
+  @@map("users")
 }

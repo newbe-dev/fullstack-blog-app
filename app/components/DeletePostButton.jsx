@@ -6,7 +6,7 @@ export default function DeletePostButton({ postId }) {
   const router = useRouter();
   async function handleClick() {
     try {
-      await fetch(`/api/post/${postId}`, {
+      await fetch(`/api/board/${postId}`, {
         method: "DELETE",
       });
       router.refresh();

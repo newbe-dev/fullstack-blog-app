@@ -5,6 +5,16 @@ import jwt from "jsonwebtoken";
 import NextAuth from "next-auth/next";
 
 export const authOptions = {
+  pages: {
+    signIn: "/auth/login",
+    signUp: "/auth/register",
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 3, // 3 Minutes
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -19,34 +29,35 @@ export const authOptions = {
           type: "password",
         },
       },
-      authorize: async (credentials) => {
+      async authorize(credentials) {
+        console.log(credentials);
         if (!credentials) {
           return null;
         }
-        const { email, password } = credentials;
 
         const user = await prisma.user.findUnique({
           where: {
-            email,
+            email: credentials.email,
           },
         });
+
         if (!user) return null;
-
-        const userPassword = user.passwordHash;
-
-        const isVaildPassword = bcrypt.compareSync(password, userPassword);
-
+        const isVaildPassword = bcrypt.compareSync(
+          credentials.password,
+          user.password
+        );
         if (!isVaildPassword) return null;
 
+        //TODO: 권한DB추가
+        if (user.email == "jshs20231403@h.jne.go.kr") {
+          user.role = "admin";
+        } else {
+          user.role = "student";
+        }
         return user;
       },
     }),
   ],
-  pages: {
-    signIn: "/auth/signin",
-    signOut: "/auth/signout",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
   jwt: {
     async encode({ secret, token }) {
       if (!token) {
@@ -63,25 +74,29 @@ export const authOptions = {
         return decodedToken;
       }
     },
-    session: {
-      strategy: "jwt",
-      maxAge: 30 * 24 * 60 * 60,
-      updateAge: 24 * 60 * 60,
-    },
-    callbacks: {
-      async session(params) {
-        if (params.session.user) {
-          params.session.user.email = params.token.email;
-        }
-        return params.session;
-      },
-      async jwt(params) {
-        if (params.user) {
-          params.token.email = params.user.email;
-        }
+  },
 
-        return params.token;
-      },
+  callbacks: {
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.email = token.email;
+        session.user.role = token.role;
+      }
+
+      return { session, token };
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.email = user.email;
+        token.role = user.role;
+      }
+
+      return token;
+    },
+    async signOut({ session, token }) {
+      session = {};
+      token = {};
+      return { session, token };
     },
   },
 };
