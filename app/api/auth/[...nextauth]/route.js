@@ -6,12 +6,12 @@ import NextAuth from "next-auth/next";
 
 export const authOptions = {
   pages: {
-    signIn: "/auth/login",
-    signUp: "/auth/register",
+    signIn: "/login",
+    signUp: "/register",
   },
   session: {
     strategy: "jwt",
-    maxAge: 60 * 3, // 3 Minutes
+    maxAge: 60 * 60, // 60 Minutes
   },
   secret: process.env.NEXTAUTH_SECRET,
 
@@ -50,9 +50,9 @@ export const authOptions = {
 
         //TODO: 권한DB추가
         if (user.email == "jshs20231403@h.jne.go.kr") {
-          user.role = "admin";
+          user.role = "ADMIN";
         } else {
-          user.role = "student";
+          user.role = "STUDENT";
         }
         return user;
       },

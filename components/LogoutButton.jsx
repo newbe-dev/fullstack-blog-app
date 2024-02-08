@@ -3,7 +3,7 @@ import { signOut } from "next-auth/react";
 
 export default () => (
   <button
-    onClick={() => signOut()}
+    onClick={() => signOut({ callbackUrl: "/login" })}
     className="block text-gray-700 hover:text-gray-900"
   >
     로그아웃

@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
-export async function POST(request, response) {
+export async function POST(request) {
   const currentUser = await getCurrentUser();
-  if (!currentUser?.id || !currentUser?.email) {
+  if (!currentUser?.id) {
     return new NextResponse("Unauthorized", { status: 400 });
   }
   const req = await request.json();
   const { title, content, category } = req;
-
-  console.log(session);
 
   const post = await prisma.post.create({
     data: {
@@ -17,30 +15,30 @@ export async function POST(request, response) {
       content,
       category: {
         connect: {
-          id: category,
+          name: category,
         },
       },
       author: {
         connect: {
-          email: session.user.email,
+          email: currentUser.email,
         },
       },
     },
   });
-  const updatedCategory = await prisma.category.update({
-    where: {
-      id: category,
-    },
-    data: {
-      posts: {
-        connect: {
-          id: post.id,
-        },
-      },
-    },
-    include: {},
-  });
-
+  // const updatedCategory = await prisma.category.update({
+  //   where: {
+  //     id: category,
+  //   },
+  //   data: {
+  //     posts: {
+  //       connect: {
+  //         //id: post.id,
+  //       },
+  //     },
+  //   },
+  //   include: {},
+  // });
+  // console.log("a");
   return NextResponse.json(post);
 }
 
@@ -51,7 +49,6 @@ export async function GET(request) {
   }
   const req = await request.json();
   const { category = null } = req;
-  //console.log({ req });
 
   const posts = await prisma.post.findMany({
     where: {

@@ -8,33 +8,63 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model User {
+  id        String   @id @default(cuid())
+  email     String  @unique
+  password    String
+  studentId String?  @unique
+  imageUrl String @db.Text @default("/")
+  name      String?
+  nickname      String?
+  role Role @default(STUDENT)
+  activities Activity[] @relation("Participate")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  posts Post[]
+  @@map("users")
+}
+
 model Post {
   id        Int  @id @default(autoincrement())
   title     String
   content   String
   like      Int @default(0)
+  view      Int @default(0)
   published  Boolean    @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
-  authorId  String?
+  authorId  String
   categoryId Int
 
-  author    User?   @relation(fields: [authorId], references: [id])
-  category  Category @relation(fields: [categoryId], references: [id])
+  author    User?   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category  Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Activity {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  location    String
+  approved Boolean @default(false)
+  createdAt   DateTime  @default(now())
+  creatorId   String
+  date        String
+  attendees   User[]    @relation("Participate")
+
+  createdBy     User      @relation("Create", fields: [creatorId], references: [id])
 }
 
 model Category {
   id        Int   @id @default(autoincrement())
-  name      String
+  name      String  @unique
   posts Post[]
 }
 
-model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String  @unique
-  password    String
-  createdAt DateTime @default(now())
-  posts Post[]
-
-  @@map("users")
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
 }

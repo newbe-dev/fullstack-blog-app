@@ -1,21 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 
-export const LoginForm = () => {
-  const router = useRouter();
+export const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
 
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/profile";
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch("/api/user/register", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      setLoading(false);
+      if (!res.ok) {
+        setError((await res.json()).message);
+        return;
+      }
+
+      await signIn("credentials", { ...formData });
+    } catch (error) {
+      setLoading(false);
+      setError(error);
+    }
+    setFormData({ name: "", email: "", password: "" });
+  };
 
   // Handle input changes
   const handleChange = (e) => {
@@ -26,58 +49,37 @@ export const LoginForm = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      console.log(formData);
-      setLoading(true);
-      const res = await signIn("credentials", {
-        redirect: false,
-        email: formData.email,
-        password: formData.password,
-        callbackUrl,
-      });
-
-      setLoading(false);
-      console.log(res);
-      if (!res?.error) {
-        router.push(callbackUrl);
-      } else {
-        setError("invalid email or password");
-      }
-    } catch (error) {
-      setLoading(false);
-      setError(error);
-    }
-    setFormData({ email: "", password: "" });
-  };
-
   return (
     <main className="w-full h-screen flex flex-col items-center justify-center px-4">
       <div className="max-w-sm w-full text-gray-600">
         <div className="text-center">
-          <img
-            src="https://floatui.com/logo.svg"
-            width={150}
-            className="mx-auto"
-          />
           <div className="mt-5 space-y-2">
             <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">
-              Log in to your account
+              회원가입
             </h3>
             <p className="">
-              Don't have an account?{" "}
-              <a
-                href="/auth/register"
+              이미 계정이 있나요?{" "}
+              <Link
+                href="/login"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Sign up
-              </a>
+                로그인하기
+              </Link>
             </p>
           </div>
         </div>
         <form onSubmit={(e) => e.preventDefault()} className="mt-8 space-y-5">
+          <div>
+            <label className="font-medium">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={(e) => handleChange(e)}
+              required
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+            />
+          </div>
           <div>
             <label className="font-medium">Email</label>
             <input
@@ -104,13 +106,8 @@ export const LoginForm = () => {
             onClick={(e) => handleSubmit(e)}
             className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
           >
-            Sign in
+            회원가입
           </button>
-          <div className="text-center">
-            <Link href="/auth/register" className="hover:text-indigo-600">
-              Forgot password?
-            </Link>
-          </div>
         </form>
       </div>
     </main>
