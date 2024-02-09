@@ -9,57 +9,71 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   email     String  @unique
-  password    String
-  studentId String?  @unique
-  imageUrl String @db.Text @default("/")
+  password  String
+  studentId String? @unique
+  imageUrl  String  @default("/") @db.Text
   name      String?
-  nickname      String?
-  role Role @default(STUDENT)
-  activities Activity[] @relation("Participate")
+  nickname  String?
+  role      Role    @default(STUDENT)
+
+  activities         UserActivity[]
+  activitiesInCharge Activity[]     @relation("Supervise")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
   posts Post[]
+
   @@map("users")
 }
 
+model UserActivity {
+  id Int @id @default(autoincrement())
+
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  activity       Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId     Int
+  representative Boolean  @default(false)
+}
+
 model Post {
-  id        Int  @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   title     String
   content   String
-  like      Int @default(0)
-  view      Int @default(0)
-  published  Boolean    @default(true)
+  like      Int      @default(0)
+  view      Int      @default(0)
+  published Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-  authorId  String
+  authorId   String
   categoryId Int
 
-  author    User?   @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  category  Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  author   User?    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 }
 
 model Activity {
-  id          Int       @id @default(autoincrement())
-  title       String
+  id          Int      @id @default(autoincrement())
+  subject     String
   description String
   location    String
-  approved Boolean @default(false)
-  createdAt   DateTime  @default(now())
-  creatorId   String
+  approved    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  creatorId   String?
+  teacherId   String?
   date        String
-  attendees   User[]    @relation("Participate")
 
-  createdBy     User      @relation("Create", fields: [creatorId], references: [id])
+  participants UserActivity[]
+  teacher      User?          @relation("Supervise", fields: [teacherId], references: [id], onDelete: SetNull)
 }
 
 model Category {
-  id        Int   @id @default(autoincrement())
-  name      String  @unique
+  id    Int    @id @default(autoincrement())
+  name  String @unique
   posts Post[]
 }
 

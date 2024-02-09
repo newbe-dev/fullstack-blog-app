@@ -9,19 +9,34 @@ export async function POST(request) {
   }
 
   const req = await request.json();
-  const { title, description, location, studentIds } = req;
-  //   const users = await getUsersByStudentId(studentIds);
-  //   if (!users) return new NextResponse("Not Match", { status: 400 });
+  const { subject, description, location, teacherName, date, studentIds } = req;
+
+  const teacher = await prisma.user.findFirst({
+    where: {
+      name: teacherName,
+      //role: "TEACHER",
+    },
+  });
+  if (!teacher)
+    return new NextResponse(`There is no teacher named ${teacherName}`, {
+      status: 400,
+    });
 
   const activity = await prisma.activity.create({
     data: {
-      title,
+      approved: currentUser?.role == "TEACHER",
+      subject,
       description,
       location,
-      attendees: {
-        connect: studentIds.map((id) => {
-          return { id: id };
-        }),
+      teacher: {
+        connect: { id: teacher.id },
+      },
+      creatorId: currentUser.studentId,
+      date,
+      participants: {
+        create: studentIds.map((studentId) => ({
+          user: { connect: { studentId: studentId } },
+        })),
       },
     },
   });

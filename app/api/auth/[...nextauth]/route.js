@@ -30,7 +30,7 @@ export const authOptions = {
         },
       },
       async authorize(credentials) {
-        console.log(credentials);
+        //console.log(credentials);
         if (!credentials) {
           return null;
         }

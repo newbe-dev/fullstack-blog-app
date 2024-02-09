@@ -6,9 +6,10 @@ import TagInput from "./TagInput";
 
 export const ApplicationForm = ({ isStudent }) => {
   const [formData, setFormData] = useState({
-    title: "",
+    subject: "",
     description: "",
     location: "",
+    teacherName: "",
     date: "",
   });
   const [tags, setTags] = useState([]);
@@ -16,17 +17,15 @@ export const ApplicationForm = ({ isStudent }) => {
 
   // Handle input changes
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { id, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [id]: value,
     });
   };
 
   // Handle form submission
   const handleSubmit = async () => {
-    //e.preventDefault();
-
     try {
       const response = await fetch("/api/activity", {
         method: "POST",
@@ -44,7 +43,13 @@ export const ApplicationForm = ({ isStudent }) => {
       console.error(error);
     }
 
-    setFormData({ title: "", description: "", location: "", date: "" });
+    setFormData({
+      subject: "",
+      description: "",
+      location: "",
+      teacherName: "",
+      date: "",
+    });
   };
 
   return (
@@ -65,42 +70,36 @@ export const ApplicationForm = ({ isStudent }) => {
             <form onSubmit={(e) => handleSubmit(e)}>
               <div className="space-y-12 sm:space-y-14">
                 <div className="grid grid-cols-1 gap-y-7">
-                  <div className="space-y-1">
-                    {/* <select
-                      id="categoryCode"
-                      className="block w-full rounded-md border-gray-500/30 pl-3 pr-10 text-base placeholder-gray-500/80 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-0 dark:bg-gray-500/20"
-                      name="categoryCode"
-                    >
-                      <option value="" className="dark:bg-gray-500">
-                        토픽을 선택해주세요.
-                      </option>
-                      <option value="news" className="dark:bg-gray-500">
-                        Tech 뉴스
-                      </option>
-                      <option value="tips" className="dark:bg-gray-500">
-                        팁
-                      </option>
-                      <option value="columns" className="dark:bg-gray-500">
-                        칼럼
-                      </option>
-                      <option value="review" className="dark:bg-gray-500">
-                        리뷰
-                      </option>
-                    </select> */}
-                  </div>
+                  <div className="space-y-1"></div>
                   <div className="space-y-1">
                     <label
-                      htmlFor="title"
+                      htmlFor="subject"
                       className="text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
                       활동명
                     </label>
                     <input
                       type="text"
-                      id="title"
-                      name="title"
-                      placeholder="활동명을 입력해주세요."
-                      value={formData.title}
+                      id="subject"
+                      placeholder="활동 주제를 입력해주세요."
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      className="block w-full appearance-none rounded-md border border-gray-500/30 pl-3 pr-10 py-2 text-base placeholder-gray-500/80 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-0 dark:bg-gray-500/20"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label
+                      htmlFor="title"
+                      className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
+                      교사 ID
+                    </label>
+                    <input
+                      type="text"
+                      id="teacherName"
+                      placeholder="지도교사분의 성명을 입력해주세요."
+                      value={formData.teacherName}
                       onChange={handleInputChange}
                       className="block w-full appearance-none rounded-md border border-gray-500/30 pl-3 pr-10 py-2 text-base placeholder-gray-500/80 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-0 dark:bg-gray-500/20"
                     />
@@ -117,7 +116,6 @@ export const ApplicationForm = ({ isStudent }) => {
                       <input
                         type="text"
                         id="date"
-                        name="date"
                         placeholder="일자를 입력해주세요."
                         value={formData.date}
                         onChange={handleInputChange}
@@ -134,7 +132,6 @@ export const ApplicationForm = ({ isStudent }) => {
                       <input
                         type="text"
                         id="location"
-                        name="location"
                         placeholder="장소를 입력해주세요."
                         value={formData.location}
                         onChange={handleInputChange}
@@ -144,10 +141,7 @@ export const ApplicationForm = ({ isStudent }) => {
                   </div>
 
                   <div className="space-y-1">
-                    <label
-                      htmlFor="title"
-                      className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       학번
                     </label>
 
@@ -156,14 +150,13 @@ export const ApplicationForm = ({ isStudent }) => {
 
                   <div className="space-y-1">
                     <label
-                      htmlFor="text"
+                      htmlFor="description"
                       className="text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      활동 내용
+                      활동 내용을 간략하게 작성해주세요.
                     </label>
                     <textarea
                       id="description"
-                      name="description"
                       value={formData.description}
                       onChange={handleInputChange}
                       rows="6"
