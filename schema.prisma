@@ -33,10 +33,11 @@ model User {
 model UserActivity {
   id Int @id @default(autoincrement())
 
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
-  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  activityId Int
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  activity       Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId     Int
+  representative Boolean  @default(false)
 }
 
 model Post {
