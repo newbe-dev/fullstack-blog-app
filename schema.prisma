@@ -19,6 +19,7 @@ model User {
   role      Role    @default(STUDENT)
 
   activities         UserActivity[]
+  // activitiesCreated  Activity[]     @relation("Create")
   activitiesInCharge Activity[]     @relation("Supervise")
 
   createdAt DateTime @default(now())
@@ -32,11 +33,10 @@ model User {
 model UserActivity {
   id Int @id @default(autoincrement())
 
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String
-  activity       Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
-  activityId     Int
-  representative Boolean  @default(false)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId Int
 }
 
 model Post {
@@ -69,6 +69,7 @@ model Activity {
 
   participants UserActivity[]
   teacher      User?          @relation("Supervise", fields: [teacherId], references: [id], onDelete: SetNull)
+  // creator      User?          @relation("Create", fields: [creatorId], references: [id], onDelete: SetNull)
 }
 
 model Category {
