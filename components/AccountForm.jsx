@@ -4,11 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export const AccountForm = ({ user }) => {
+  if (!user) return <div></div>;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    nickname: user?.nickname || "",
+    nickname: user.nickname || "",
   });
 
   const handleSubmit = async (e) => {
