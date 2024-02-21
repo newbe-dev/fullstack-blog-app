@@ -8,7 +8,7 @@ export const ProfileForm = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    nickname: user.nickname || "",
+    nickname: user?.nickname || "",
   });
 
   const handleSubmit = async (e) => {
