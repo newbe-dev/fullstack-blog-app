@@ -120,57 +120,6 @@ export default async function Home({ params }) {
                         </div>
                       </div>
                     </div>
-                    <div className="ml-auto flex items-center gap-x-4 text-sm text-gray-700 sm:gap-x-5 dark:text-gray-300">
-                      <div>
-                        <span className="sr-only">공유</span>
-                        <div className="relative" data-headlessui-state="">
-                          <div className="flex items-center">
-                            <button
-                              id="headlessui-menu-button-:r8:"
-                              type="button"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                              data-headlessui-state=""
-                            >
-                              <span className="sr-only">공유하기</span>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                                className="h-6 w-6 text-gray-400 hover:text-blue-500 focus:outline-0 focus:ring-0 dark:hover:text-blue-200"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-                                ></path>
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <button>
-                        <span className="sr-only">스크랩</span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          aria-hidden="true"
-                          className="h-6 w-6 text-gray-400 hover:fill-current hover:text-blue-500 focus:outline-0 focus:ring-0 dark:hover:text-blue-200"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
-                          ></path>
-                        </svg>
-                      </button>
-                    </div>
                   </div>
                   <h1 className="block break-all text-xl font-semibold leading-7 sm:text-3xl sm:leading-10">
                     {title}

@@ -1,18 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TagInput from "./TagInput";
 
-export const ApplicationForm = ({ isStudent }) => {
+export const ApplicationForm = ({ isTeacher, name }) => {
   const [formData, setFormData] = useState({
     subject: "",
     description: "",
     location: "",
-    teacherName: "",
+    teacherName: name || "",
     date: "",
   });
   const [tags, setTags] = useState([]);
+  const [isValid, setIsValid] = useState(false);
+  useEffect(() => {
+    console.log("검사");
+    setIsValid(
+      formData.subject.trim() !== "" &&
+        formData.description.trim() !== "" &&
+        formData.location.trim() !== "" &&
+        formData.teacherName.trim() !== "" &&
+        formData.date.trim() !== ""
+    );
+  }, [formData]);
+
   const router = useRouter();
 
   // Handle input changes
@@ -61,10 +73,10 @@ export const ApplicationForm = ({ isStudent }) => {
           <div className="space-y-10">
             <div className="space-y-2">
               <h3 className="text-xl font-medium sm:text-3xl sm:leading-10">
-                탐활서 신청
+                탐활서 {isTeacher ? "발급" : "신청"}
               </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                탐활서 신청 페이지
+                탐활서 {isTeacher ? "발급" : "신청"} 페이지
               </p>
             </div>
             <form onSubmit={(e) => handleSubmit(e)}>
@@ -93,7 +105,7 @@ export const ApplicationForm = ({ isStudent }) => {
                       htmlFor="title"
                       className="text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      교사 ID
+                      지도교사
                     </label>
                     <input
                       type="text"
@@ -113,6 +125,7 @@ export const ApplicationForm = ({ isStudent }) => {
                       >
                         일자
                       </label>
+
                       <input
                         type="text"
                         id="date"
@@ -175,21 +188,23 @@ export const ApplicationForm = ({ isStudent }) => {
                     취소
                   </button>
 
-                  {isStudent ? (
+                  {isTeacher ? (
                     <button
                       type="button"
                       onClick={handleSubmit}
-                      className="inline-flex items-center space-x-2 rounded-md bg-blue-500 px-8 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-600 disabled:bg-blue-500 disabled:opacity-40"
+                      className="inline-flex items-center space-x-2 rounded-md bg-red-500 px-8 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-600 disabled:bg-red-500 disabled:opacity-40"
+                      disabled={!isValid}
                     >
-                      신청
+                      발급
                     </button>
                   ) : (
                     <button
                       type="button"
                       onClick={handleSubmit}
-                      className="inline-flex items-center space-x-2 rounded-md bg-red-500 px-8 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-600 disabled:bg-red-500 disabled:opacity-40"
+                      className="inline-flex items-center space-x-2 rounded-md bg-blue-500 px-8 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-600 disabled:bg-blue-500 disabled:opacity-40"
+                      disabled={!isValid}
                     >
-                      발급
+                      신청
                     </button>
                   )}
                 </div>

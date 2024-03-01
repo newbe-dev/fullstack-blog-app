@@ -4,7 +4,7 @@ import getCurrentUser from "./getCurrentUser";
 const getUsers = async () => {
   const currentUser = await getCurrentUser();
 
-  if (!currentUser?.id) {
+  if (!currentUser?.id || currentUser.role != "ADMIN") {
     return [];
   }
 

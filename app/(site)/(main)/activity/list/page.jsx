@@ -6,7 +6,8 @@ export default async function Home() {
   const activities = await getActivities();
   return (
     <main className="my-10 mx-48 px-4 sm:px-6 xl:px-0">
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full gap-4">
+        <div className="hidden w-[150px] shrink-0 lg:block"></div>
         <div
           className="rounded-lg border bg-card text-card-foreground shadow-sm"
           data-v0-t="card"
@@ -21,33 +22,28 @@ export default async function Home() {
             <div className="flex flex-col h-[300px]">
               <div className="flex-1">
                 <div className="relative w-full overflow-auto">
-                  <table className="w-full caption-bottom text-sm">
+                  <table className="w-full caption-bottom text-sm table-fixed">
                     <thead className="[&amp;_tr]:border-b">
                       <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                        <th className="w-[5%] font-medium h-12 px-4 text-white bg-teal-700"></th>
+                        <th className="w-[20%] font-medium h-12 px-4 text-white bg-teal-700">
                           활동주제
                         </th>
-                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                        <th className="w-[20%] font-medium h-12 px-4 text-white bg-teal-700">
+                          활동장소
+                        </th>
+                        <th className="w-[25%] font-medium h-12 px-4 text-white bg-teal-700">
                           활동일시
                         </th>
-                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                          활동내용
-                        </th>
-                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                        <th className="w-[15%] font-medium h-12 px-4 text-white bg-teal-700">
                           대표학생
                         </th>
-                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                          참여학생
-                        </th>
-                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                        <th className="w-[15%] font-medium h-12 px-4 text-white bg-teal-700">
                           지도교사
-                        </th>
-                        <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 w-[100px]">
-                          Actions
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="[&amp;_tr:last-child]:border-0">
+                    <tbody className="">
                       {activities.map((activity, index) => {
                         return <Activity key={index} {...activity} />;
                       })}
@@ -58,6 +54,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
+        <div className="hidden w-[150px] shrink-0 lg:block"></div>
       </div>
     </main>
   );

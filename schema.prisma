@@ -12,14 +12,13 @@ model User {
   id        String  @id @default(cuid())
   email     String  @unique
   password  String
-  studentId String? @unique
+  studentId String? @unique @db.VarChar(4)
   imageUrl  String  @default("/") @db.Text
   name      String?
-  nickname  String?
+  nickname  String? @db.VarChar(20)
   role      Role    @default(STUDENT)
 
   activities         UserActivity[]
-  // activitiesCreated  Activity[]     @relation("Create")
   activitiesInCharge Activity[]     @relation("Supervise")
 
   createdAt DateTime @default(now())
@@ -64,13 +63,11 @@ model Activity {
   location    String
   approved    Boolean  @default(false)
   createdAt   DateTime @default(now())
-  creatorId   String?
   teacherId   String?
   date        String
 
   participants UserActivity[]
   teacher      User?          @relation("Supervise", fields: [teacherId], references: [id], onDelete: SetNull)
-  // creator      User?          @relation("Create", fields: [creatorId], references: [id], onDelete: SetNull)
 }
 
 model Category {

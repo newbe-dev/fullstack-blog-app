@@ -63,26 +63,6 @@ export default async function Post({
               >
                 {category?.name}
               </a>
-              <div className="flex items-center gap-x-1 sm:gap-x-2">
-                <a
-                  className="line-clamp-1 text-xs font-normal leading-5 text-gray-600 hover:text-blue-500 sm:text-sm dark:text-gray-400 dark:hover:text-blue-200"
-                  href="#"
-                >
-                  #태그
-                </a>
-                <a
-                  className="line-clamp-1 text-xs font-normal leading-5 text-gray-600 hover:text-blue-500 sm:text-sm dark:text-gray-400 dark:hover:text-blue-200"
-                  href="#"
-                >
-                  #태그2
-                </a>
-                <a
-                  className="line-clamp-1 text-xs font-normal leading-5 text-gray-600 hover:text-blue-500 sm:text-sm dark:text-gray-400 dark:hover:text-blue-200"
-                  href="#"
-                >
-                  #태그3
-                </a>
-              </div>
             </div>
             <div className="flex items-center gap-x-2 text-gray-700 dark:text-gray-300">
               <div className="inline-flex items-center space-x-0.5 text-xs sm:text-sm">

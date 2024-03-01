@@ -1,72 +1,59 @@
-export default async function Activity({
-  id,
-  subject,
-  description,
-  location,
-  approved,
-  date,
-  teacher,
-  participants,
-}) {
+"use client";
+
+import { useEffect, useState } from "react";
+
+export default function Activity(activity) {
+  const { subject, content, location, date, participants, teacher } = activity;
+  const [representative, setRepresentative] = useState({
+    name: "",
+    studentId: "",
+  });
+  const [toggle, setToggle] = useState(false);
+
+  const handleClick = () => setToggle((flag) => !flag);
+  useEffect(() => {
+    participants.forEach((userActivity) => {
+      if (userActivity.representative) setRepresentative(userActivity.user);
+    });
+  }, []);
+
   return (
-    <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-      <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-semibold">
-        {subject}
-      </td>
-      <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-        {date}
-      </td>
-      <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-        {description}
-      </td>
-      <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-        대표학생
-      </td>
-      <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-        {participants.map((user) => (
-          <div>{user.studentId}</div>
-        ))}
-      </td>
-      <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 flex gap-2">
-        <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 w-8">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-4 w-4"
-          >
-            <path d="M4 13.5V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2h-5.5"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <path d="M10.42 12.61a2.1 2.1 0 1 1 2.97 2.97L7.95 21 4 22l.99-3.95 5.43-5.44Z"></path>
-          </svg>
-          <span className="sr-only">Edit</span>
-        </button>
-        <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 w-8">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-4 w-4"
-          >
-            <path d="M3 6h18"></path>
-            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-          </svg>
-          <span className="sr-only">Delete</span>
-        </button>
-      </td>
-    </tr>
+    <>
+      <tr
+        className="border-b-2 transition-colors cursor-pointer"
+        onClick={handleClick}
+      >
+        <td className="p-4 text-center align-middle">▼</td>
+        <td className="p-4 text-center align-middle font-semibold">
+          {subject}
+        </td>
+        <td className="p-4 text-center align-middle">{location}</td>
+        <td className="p-4 text-center align-middle">{date}</td>
+        <td className="p-4 text-center align-middle">
+          {representative?.studentId} {representative?.name}
+        </td>
+        <td className="p-4 text-center align-middle">{teacher.name}</td>
+      </tr>
+      <tr className={toggle ? "border-b-2" : "hidden"}>
+        <td colSpan="6" className="bg-gray-100 py-[20px] px-[30px] font-medium">
+          <h4 className="text-lg mb-1">활동내용</h4>
+          <p className="font-normal">
+            {content}
+            불확실한 현상을 모형화하기 위해 이산형 및 연속형 확률 변수들의
+            특성을 다루며 실험데이터를 이용한 모형의 분석을 위해 기초적인
+            통계기법과 가설의 검증 및 단순 회귀분석 기법 등을 다룬다.
+          </p>
+          <h4 className="text-lg mt-4">참가학생</h4>
+          <span className="font-normal">
+            {participants
+              ?.map(
+                (userActivity, index) =>
+                  userActivity.user.studentId + " " + userActivity.user.name
+              )
+              .join(", ")}
+          </span>
+        </td>
+      </tr>
+    </>
   );
 }

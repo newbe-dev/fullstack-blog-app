@@ -5,10 +5,15 @@ const getActivities = async () => {
     where: {},
     include: {
       participants: {
-        select: { userId: true, representative: true },
+        select: {
+          representative: true,
+          user: {
+            select: { name: true, studentId: true },
+          },
+        },
       },
       teacher: {
-        select: { name: true, id: true },
+        select: { name: true },
       },
     },
   });

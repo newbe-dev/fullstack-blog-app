@@ -4,7 +4,7 @@ import getUsersByStudentId from "@/app/actions/getUsersByStudentId";
 
 export async function POST(request) {
   const currentUser = await getCurrentUser();
-  if (!currentUser?.id) {
+  if (!currentUser || !currentUser.id) {
     return new NextResponse("Unauthorized", { status: 400 });
   }
 
@@ -24,7 +24,7 @@ export async function POST(request) {
 
   const activity = await prisma.activity.create({
     data: {
-      approved: currentUser?.role == "TEACHER",
+      approved: currentUser.role == "TEACHER",
       subject,
       description,
       location,
@@ -36,6 +36,7 @@ export async function POST(request) {
       participants: {
         create: studentIds.map((studentId) => ({
           user: { connect: { studentId: studentId } },
+          representative: studentId == currentUser.studentId,
         })),
       },
     },

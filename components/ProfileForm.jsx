@@ -62,7 +62,7 @@ export const ProfileForm = ({ user }) => {
                 <input
                   type="text"
                   id="studentId"
-                  value={user.studentId}
+                  value={user.studentId || ""}
                   disabled
                   className="block w-full appearance-none rounded-md border border-gray-500/30 px-3 py-2 text-sm placeholder-gray-500/80 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-0 sm:text-base dark:bg-gray-500/20"
                 />
@@ -79,7 +79,7 @@ export const ProfileForm = ({ user }) => {
                 <input
                   type="text"
                   id="username"
-                  value={user.name}
+                  value={user.name || ""}
                   disabled
                   className="block w-full appearance-none rounded-md border border-gray-500/30 px-3 py-2 text-sm placeholder-gray-500/80 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-0 sm:text-base dark:bg-gray-500/20"
                 />
@@ -97,7 +97,7 @@ export const ProfileForm = ({ user }) => {
                   type="text"
                   id="nickname"
                   onChange={handleChange}
-                  value={formData.nickname}
+                  value={formData.nickname || ""}
                   autoComplete="nickname"
                   placeholder="닉네임을 입력해주세요."
                   className="block w-full appearance-none rounded-md border border-gray-500/30 px-3 py-2 text-sm placeholder-gray-500/80 shadow-sm focus:border-gray-500 focus:outline-none focus:ring-0 sm:text-base dark:bg-gray-500/20"

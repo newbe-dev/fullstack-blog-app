@@ -5,6 +5,7 @@ import getSession from "@/app/actions/getSession";
 export default async function Home() {
   const { session } = await getSession();
   console.log(session);
-  const isStudent = session.user?.role === "STUDENT";
-  return <ApplicationForm isStudent={isStudent} />;
+  const isTeacher =
+    session.user?.role === "TEACHER" || session.user?.role === "ADMIN";
+  return <ApplicationForm isTeacher={isTeacher} name={session.user?.name} />;
 }

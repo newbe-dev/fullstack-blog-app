@@ -1,8 +1,11 @@
-import { Inter } from "next/font/google";
+import { Noto_Sans_KR } from "next/font/google";
+
 import "./globals.css";
 import Provider from "@/components/Provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const noto = Noto_Sans_KR({
+  subsets: ["latin"], // 또는 preload: false
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -11,9 +14,9 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="kr">
       <Provider>
-        <body className={inter.className}>{children}</body>
+        <body className={noto.className}>{children}</body>
       </Provider>
     </html>
   );

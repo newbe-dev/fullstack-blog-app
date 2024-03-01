@@ -47,13 +47,6 @@ export const authOptions = {
           user.password
         );
         if (!isVaildPassword) return null;
-
-        //TODO: 권한DB추가
-        if (user.email == "jshs20231403@h.jne.go.kr") {
-          user.role = "ADMIN";
-        } else {
-          user.role = "STUDENT";
-        }
         return user;
       },
     }),
