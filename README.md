@@ -1,4 +1,6 @@
-할거:
-신청서 승인/반려
-신청서 목록 페이지 개선
-공지사항 / 청원 게시판 분리
+Nextjs + Prisma
+제작기간: 24년 1월 ~ 2월
+nextjs 공부 용도로 학교 사이트 기능 따라 만들어보려 했으나 미완성
+
+실행: npm run dev
+DB GUI 표시: npx prisma studio
