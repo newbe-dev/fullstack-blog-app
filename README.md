@@ -1,4 +1,4 @@
-Nextjs + Prisma
+Nextjs + Prisma + Postgresdb
 제작기간: 24년 1월 ~ 2월
 nextjs 공부 용도로 학교 사이트 기능 따라 만들어보려 했으나 미완성
 
